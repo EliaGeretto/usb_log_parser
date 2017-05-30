@@ -21,4 +21,9 @@ class Parser(metaclass=abc.ABCMeta):
         pass
 
 
-# TODO: Implement parsers for the distributions to be tested
+class SyslogParser(Parser):
+    pass
+
+
+class JournaldParser(Parser):
+    pass
