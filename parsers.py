@@ -25,26 +25,26 @@ class Parser(metaclass=abc.ABCMeta):
         dictio = {}
         for line in self.__usb_data:
             if re.search(self.new_usb_pattern, line):
-                name = re.split(':',re.split('usb ', line)[1])[0]
+                name = re.split(':', re.split('usb ', line)[1])[0]
                 temp = UsbInfo()
                 temp.time_in(line[:15])
                 if name in dictio:
                     self.result.append(dictio[name])
                 dictio[name] = temp
             elif re.search(self.product_pattern, line):
-                name = re.split(':',re.split('usb ', line)[1])[0]
+                name = re.split(':', re.split('usb ', line)[1])[0]
                 prod = re.split(self.product_pattern, line)[1]
                 dictio[name].product = prod.rstrip()
             elif re.search(self.manufac_pattern, line):
-                name = re.split(':',re.split('usb ', line)[1])[0]
+                name = re.split(':', re.split('usb ', line)[1])[0]
                 manu = re.split(self.manufac_pattern, line)[1]
                 dictio[name].manufact = manu.rstrip()
             elif re.search(self.serial_pattern, line):
-                name = re.split(':',re.split('usb ', line)[1])[0]
+                name = re.split(':', re.split('usb ', line)[1])[0]
                 seria = re.split(self.serial_pattern, line)[1]
                 dictio[name].serial = seria.rstrip()
             elif re.search(self.dis_usb_pattern, line):
-                name = re.split(':',re.split('usb ', line)[1])[0]
+                name = re.split(':', re.split('usb ', line)[1])[0]
                 dictio[name].time_out(line[:15])
             else:
                 continue
@@ -70,6 +70,7 @@ class SyslogParser(Parser):
                     usb_data.append(line)
                 else:
                     continue
+        return usb_data
 
 
 class JournaldParser(Parser):
