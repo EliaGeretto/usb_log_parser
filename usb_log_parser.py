@@ -1,5 +1,6 @@
 from extractor import Extractor
 import argparse
+import logging
 
 
 def parse_arguments():
@@ -9,6 +10,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
+logging.basicConfig(filename='debug.log', level=logging.DEBUG)
 args = parse_arguments()
 extractor = Extractor(args.images)
 

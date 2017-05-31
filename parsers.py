@@ -3,6 +3,7 @@ from collections import namedtuple
 from datetime import datetime
 import abc
 import re
+import logging
 
 from usb_info import UsbInfo
 
@@ -10,7 +11,6 @@ from usb_info import UsbInfo
 LogEntry = namedtuple('LogEntry', ['timestamp', 'message'])
 
 
-# XXX: Needs review, given the new internal API
 class Parser(metaclass=abc.ABCMeta):
     def __init__(self, src):
         self.__usb_data = self.retrieve_data(src)
@@ -30,30 +30,46 @@ class Parser(metaclass=abc.ABCMeta):
         return None
 
     def __parse_entries(self):
+        logging.info('Parsing USB subsystem messages')
+
         dictio = {}
-        for logentry in self.__usb_data:
-            if re.search(self.__new_usb_pattern, logentry.message):
-                name = logentry.message.split(':')[0]
+        for log_entry in self.__usb_data:
+            if re.search(self.__new_usb_pattern, log_entry.message):
+                name = log_entry.message.split(':')[0]
                 temp = UsbInfo()
-                temp.time_in = logentry.timestamp
+                temp.time_in = log_entry.timestamp
                 if name in dictio:
                     self.results.append(dictio[name])
+                    logging.debug('({}) entry elimination'.format(name))
                 dictio[name] = temp
-            elif re.search(self.__product_pattern, logentry.message):
-                name = logentry.message.split(':')[0]
-                prod = re.split(self.__product_pattern, logentry.message)[1]
+                logging.debug('({}) new device'.format(name))
+
+            elif re.search(self.__product_pattern, log_entry.message):
+                name = log_entry.message.split(':')[0]
+                prod = re.split(self.__product_pattern, log_entry.message)[1]
                 dictio[name].product = prod.rstrip()
-            elif re.search(self.__manufac_pattern, logentry.message):
-                name = logentry.message.split(':')[0]
-                manu = re.split(self.__manufac_pattern, logentry.message)[1]
+                logging.debug('({}) product "{}"'.format(
+                        name, dictio[name].product))
+
+            elif re.search(self.__manufac_pattern, log_entry.message):
+                name = log_entry.message.split(':')[0]
+                manu = re.split(self.__manufac_pattern, log_entry.message)[1]
                 dictio[name].manufact = manu.rstrip()
-            elif re.search(self.__serial_pattern, logentry.message):
-                name = logentry.message.split(':')[0]
-                seria = re.split(self.__serial_pattern, logentry.message)[1]
+                logging.debug('({}) manufacturer "{}"'.format(
+                        name, dictio[name].manufact))
+
+            elif re.search(self.__serial_pattern, log_entry.message):
+                name = log_entry.message.split(':')[0]
+                seria = re.split(self.__serial_pattern, log_entry.message)[1]
                 dictio[name].serial = seria.rstrip()
-            elif re.search(self.__dis_usb_pattern, logentry.message):
-                name = logentry.message.split(':')[0]
-                dictio[name].time_out = logentry.timestamp
+                logging.debug('({}) serial "{}"'.format(
+                        name, dictio[name].serial))
+
+            elif re.search(self.__dis_usb_pattern, log_entry.message):
+                name = log_entry.message.split(':')[0]
+                dictio[name].time_out = log_entry.timestamp
+                logging.debug('({}) disconnect "{}"'.format(
+                        name, dictio[name].time_out))
 
         for res in dictio.values():
             self.results.append(res)
@@ -68,12 +84,13 @@ class SyslogParser(Parser):
         super().__init__(src)
 
     def retrieve_data(self, src):
+        logging.info('Retrieving data from syslog file')
         usb_entries = []
         with open(src) as syslog:
             for line in syslog:
                 # Kernel log message
                 if re.search(self.__kern_pattern, line):
-                    message = re.split(self.__kern_pattern, line)[1]
+                    message = re.split(self.__kern_pattern, line)[1].strip()
                     # USB subsystem message
                     if message.startswith('usb') or message.startswith('hub'):
                         date_string = line[:15]
@@ -81,6 +98,8 @@ class SyslogParser(Parser):
                                 date_string, '%b %d %H:%M:%S')
                         log_entry = LogEntry(date, message)
                         usb_entries.append(log_entry)
+                        logging.debug('Extracted line "{}"\t"{}"'.format(
+                                log_entry.timestamp, log_entry.message))
 
         return usb_entries
 
@@ -90,6 +109,7 @@ class JournaldParser(Parser):
         super().__init__(src)
 
     def retrieve_data(self, src):
+        logging.info('Retrieving data from systemd journal directory')
         reader = journal.Reader(path=src)
         reader.add_match(_KERNEL_SUBSYSTEM='usb')
 
@@ -100,6 +120,8 @@ class JournaldParser(Parser):
                     journal_entry['__REALTIME_TIMESTAMP'],
                     journal_entry['MESSAGE'])
             usb_entries.append(log_entry)
+            logging.debug('Extracted line "{}"\t"{}"'.format(
+                    log_entry.timestamp, log_entry.message))
         reader.close()
 
         return usb_entries
