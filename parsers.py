@@ -1,8 +1,16 @@
+from systemd import journal
+from collections import namedtuple
+from datetime import datetime
 import abc
 import re
+
 from usb_info import UsbInfo
 
 
+LogEntry = namedtuple('LogEntry', ['timestamp', 'message'])
+
+
+# XXX: Needs review, given the new internal API
 class Parser(metaclass=abc.ABCMeta):
     def __init__(self, src):
         self.__usb_data = self.retrieve_data(src)
@@ -55,20 +63,26 @@ class SyslogParser(Parser):
     def __init__(self, src):
         # The method retrieve_data will be called by the constructor of the
         # parent class, thus this initialization goes before the call to it.
-        self.__data_pattern = re.compile(
-                ': New USB device found,|: USB disconnect,|: Product: |'
-                ': Manufacturer: |: SerialNumber: ')
+        self.__kern_pattern = re.compile('kernel: \[\s*[0-9]+\.[0-9]+\] ')
 
         super().__init__(src)
 
     def retrieve_data(self, src):
-        usb_data = []
-        with open(src) as origin:
-            for line in origin:
-                if re.search(self.__data_pattern, line):
-                    usb_data.append(line)
+        usb_entries = []
+        with open(src) as syslog:
+            for line in syslog:
+                # Kernel log message
+                if re.search(self.__kern_pattern, line):
+                    message = re.split(self.__kern_pattern, line)[1]
+                    # USB subsystem message
+                    if message.startswith('usb') or message.startswith('hub'):
+                        date_string = line[:15]
+                        date = datetime.strptime(
+                                date_string, '%b %d %H:%M:%S')
+                        log_entry = LogEntry(date, message)
+                        usb_entries.append(log_entry)
 
-        return usb_data
+        return usb_entries
 
 
 class JournaldParser(Parser):
@@ -76,5 +90,16 @@ class JournaldParser(Parser):
         super().__init__(src)
 
     def retrieve_data(self, src):
-        # TODO: Extract data from journald log
-        pass
+        reader = journal.Reader(path=src)
+        reader.add_match(_KERNEL_SUBSYSTEM='usb')
+
+        usb_entries = []
+        for journal_entry in reader:
+            # The __REALTIME_TIMESTAMP is already a datetime object
+            log_entry = LogEntry(
+                    journal_entry['__REALTIME_TIMESTAMP'],
+                    journal_entry['MESSAGE'])
+            usb_entries.append(log_entry)
+        reader.close()
+
+        return usb_entries
