@@ -4,7 +4,8 @@ from datetime import datetime
 
 class UsbInfo:
 
-    DATETIME_FMT = '%B %d %H:%M:%S'
+    DATETIME_FMT = '%b %d %H:%M:%S'
+    UNKNOWN_STR = 'Unknown'
 
     def __init__(self):
         self.product = None
@@ -32,40 +33,14 @@ class UsbInfo:
         self.__time_out = value
 
     def __str__(self):
-        return ('Product: {} ; Manufacturer: {} ; Serial number: {} ; '
-                'Insertion: {} ; Expulsion: {}'.format(
-                        self.product, self.manufact, self.serial,
-                        self.time_in, self.time_out))
-
-
-class UsbInfoTest(unittest.TestCase):
-
-    TEST_FMT = '%b %d %H:%M:%S'
-
-    def setUp(self):
-        self.usb_info = UsbInfo()
-
-    def test_empty_object(self):
-        self.assertEqual(str(self.usb_info),
-                         ('Product: None ; Manufacturer: None ; '
-                          'Serial number: None ; Insertion: None ; '
-                          'Expulsion: None'))
-
-    def test_full_object(self):
-        self.usb_info.product = 'Hello'
-        self.usb_info.manufact = 'World'
-        self.usb_info.serial = '123456'
-        self.usb_info.time_in = datetime.strptime(
-                'May  5 05:05:05', UsbInfoTest.TEST_FMT)
-        self.usb_info.time_out = datetime.strptime(
-                'Oct 10 10:10:10', UsbInfoTest.TEST_FMT)
-
-        self.assertEqual(str(self.usb_info),
-                         ('Product: Hello ; Manufacturer: World ; '
-                          'Serial number: 123456 ; '
-                          'Insertion: May 05 05:05:05 ; '
-                          'Expulsion: October 10 10:10:10'))
-
-
-if __name__ == '__main__':
-    unittest.main()
+        return ('| {:20} | {:20} | {:20} | {:20} | {:20} |'.format(
+                self.product[:20] if self.product is not None
+                        else UsbInfo.UNKNOWN_STR,
+                self.manufact[:20] if self.manufact is not None
+                        else UsbInfo.UNKNOWN_STR,
+                self.serial[:20] if self.serial is not None
+                        else UsbInfo.UNKNOWN_STR,
+                self.time_in[:20] if self.time_in is not None
+                        else UsbInfo.UNKNOWN_STR,
+                self.time_out[:20] if self.time_out is not None
+                        else UsbInfo.UNKNOWN_STR))
