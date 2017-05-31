@@ -31,29 +31,29 @@ class Parser(metaclass=abc.ABCMeta):
 
     def __parse_entries(self):
         dictio = {}
-        for line in self.__usb_data:
-            if re.search(self.__new_usb_pattern, line):
-                name = re.split(':', re.split('usb ', line)[1])[0]
+        for logentry in self.__usb_data:
+            if re.search(self.__new_usb_pattern, logentry.message):
+                name = logentry.message.split(':')[0]
                 temp = UsbInfo()
-                temp.time_in = line[:15]
+                temp.time_in = logentry.timestamp
                 if name in dictio:
                     self.results.append(dictio[name])
                 dictio[name] = temp
-            elif re.search(self.__product_pattern, line):
-                name = re.split(':', re.split('usb ', line)[1])[0]
-                prod = re.split(self.__product_pattern, line)[1]
+            elif re.search(self.__product_pattern, logentry.message):
+                name = logentry.message.split(':')[0]
+                prod = re.split(self.__product_pattern, logentry.message)[1]
                 dictio[name].product = prod.rstrip()
-            elif re.search(self.__manufac_pattern, line):
-                name = re.split(':', re.split('usb ', line)[1])[0]
-                manu = re.split(self.__manufac_pattern, line)[1]
+            elif re.search(self.__manufac_pattern, logentry.message):
+                name = logentry.message.split(':')[0]
+                manu = re.split(self.__manufac_pattern, logentry.message)[1]
                 dictio[name].manufact = manu.rstrip()
-            elif re.search(self.__serial_pattern, line):
-                name = re.split(':', re.split('usb ', line)[1])[0]
-                seria = re.split(self.__serial_pattern, line)[1]
+            elif re.search(self.__serial_pattern, logentry.message):
+                name = logentry.message.split(':')[0]
+                seria = re.split(self.__serial_pattern, logentry.message)[1]
                 dictio[name].serial = seria.rstrip()
-            elif re.search(self.__dis_usb_pattern, line):
-                name = re.split(':', re.split('usb ', line)[1])[0]
-                dictio[name].time_out = line[:15]
+            elif re.search(self.__dis_usb_pattern, logentry.message):
+                name = logentry.message.split(':')[0]
+                dictio[name].time_out = logentry.timestamp
 
         for res in dictio.values():
             self.results.append(res)
