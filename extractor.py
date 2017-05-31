@@ -45,6 +45,8 @@ class Extractor:
     def get_usb_info(self):
         self.__mount_volume()
         self.__init_log_parser()
+
+        # Otherwise it is too fast
         sleep(0.5)
         self.__unmount_volume()
 
