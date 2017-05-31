@@ -74,6 +74,8 @@ class Parser(metaclass=abc.ABCMeta):
         for res in dictio.values():
             self.results.append(res)
 
+        self.results.sort(key=lambda entry: entry.time_in)
+
 
 class SyslogParser(Parser):
     def __init__(self, src):
