@@ -38,7 +38,7 @@ to keep benefiting from the computing devices revolution.
 Everyone can get access and interact with PCs and smartphones and also criminals
 are using them to perpetrate frauds and illegal activities. Indeed, the Digital
 forensic branch is becoming one of the most important sector in the forensics
-and investigation field. By inspecting and analysing computer systems, officers
+and investigation field. By inspecting and analyzing computer systems, officers
 can retrieve essential evidence to prove and demonstrate criminal event.
 
 This paper aims to contribute in this field and is focused on USB devices and
@@ -65,12 +65,12 @@ opensourced. This software will help Linux users in retrieving data about USB
 devices from an image of Linux installation.
 
 The paper is structured as follow. In section~\ref{sec:resprep} is described the
-methodology and the steps performed to analyse the images which were used to
+methodology and the steps performed to analyze the images which were used to
 develop the tool. Then, the achieved goals are described in
 section~\ref{sec:goals} and the short discussion reported in
 section~\ref{sec:concl} ends the paper.
 
-\section{Log files in the main operating system}
+\section{Log files and USB logging}
 \label{sec:lit}
 Log files are one of the most important sources of information when trying to
 reconstruct the events that lead to a certain situation in a computer system.
@@ -82,7 +82,7 @@ moment.
 Given the information they contain, log files are also one of the most important
 sources of information during a forensics investigation since they allow to
 trace possibly malicious activity through time. As a consequence, it is
-essential to be able to retrieve and analize them in the fastest way
+essential to be able to retrieve and analyze them in the fastest way
 possible.~\cite{finlayson1987log}
 
 One of the main problems when analyzing log files is that they tend to be huge
@@ -99,11 +99,12 @@ focus of this study.
 
 \subsection{Windows}\label{sec:litWindows}
 In the newest iterations of Microsoft Windows, all the log files are stored by
-default in the folder \texttt{\%SystemRoot\%\\system32\\winevt\\Logs}. These
-files can be opened with a tool called \emph{Event Viewer} in order to examine
-their content. This tool, however, allows only for simple automatic analysis, as
-a general keyword search, but it does not automatically extract the most
-relevant information stored.
+default in the folder
+\texttt{\%SystemRoot\%\textbackslash{}system32\textbackslash{}winevt\textbackslash{}Logs}.
+These files can be opened with a tool called \emph{Event Viewer} in order to
+examine their content. This tool, however, allows only for simple automatic
+analysis, as a general keyword search, but it does not automatically extract
+the most relevant information stored.
 
 From a forensics investigator perspective, the use of Event Viewer implies a
 tedious and error prone manual analysis that is surely not desirable. For this
@@ -139,11 +140,11 @@ as the \emph{X11} display server, and construct a general system log.
 Unfortunately, different distributions use different log-handling daemons and
 even different versions of the same daemon which may store the log files in
 different locations. The most common ones are the \emph{syslog} daemon, which
-stores the log in the \emph{/var/log/syslog} file in plaintext, and the
+stores the log in the \texttt{/var/log/syslog} file in plaintext, and the
 \emph{journald} daemon, part of the systemd project, which stores the files in
-the \emph{/var/log/journal/} directory in binary format. There are also other
+the \texttt{/var/log/journal/} directory in binary format. There are also other
 interesting combinations that include collecting the data using journald and
-then store them in a syslog compatible format, as Ubuntu and derivates
+then store them in a syslog compatible format, as Ubuntu and derivatives
 do.~\cite{poettering2012journal}
 
 All the USB related information flows from the kernel ring buffer to the log
