@@ -20,16 +20,55 @@ G. Iadarola & (1879480) \\
 \maketitle
 
 \section{Introduction}
-In digital forensics it is necessary to inspect certain computer systems to see what information they hold and how they were used. Knowledge about when a USB device was connected can be helpful in the investigation. USB devices can be used to transfer valuable data in cases of data theft or possession of illegal material. Copying data leaves traces, as A. Ramani and S. Dewangan demonstrated in their paper \cite{Abhijeet14} and T. Roy and A. Jain in theirs.~\cite{Tanushree12} 
+Nowadays, almost half of all households in Western Europe have a personal
+computer and the percentage increases over 90\% by taking into account only
+young people (15 to 30 years old).
 
-In Section~\ref{sec:lit}, we show how to access this information in Windows and Linux systems. There are tools which can help for Windows. However, for Linux there are no tools like that. Linux is getting slowly more private users\cite{osShare} and a lot of Internet servers run on a Linux distribution\cite{InternetServer}. 
+The number of computing devices as PCs, laptops and smartphones has increased
+exponentially in the past decade. Daily activities are organized on social
+media, works are performed on laptop and meetings on video-conference. Our
+entire life is managed through electronic devices and the number of connected
+user is going to grow in the future. The government's (most of them) and the
+public opinion do agree with these changes and support every initiative which
+increase the use of new technologies.
 
-can get information from the log files on a Windows system, especially for an image of a disk, which is most used in digital forensics. 
+Nevertheless, several problems has to be faced and need to be managed in order
+to keep benefiting from the computing devices revolution.
 
-However, in this paper we will not focus on Windows machines or how data is copied. We will focus on how we can detect the use of a usb device on Linux. There is not a easy way to do this for a images created for a Linux machine.
+Everyone can get access and interact with PCs and smartphones and also criminals
+are using them to perpetrate frauds and illegal activities. Indeed, the Digital
+forensic branch is becoming one of the most important sector in the forensics
+and investigation field. By inspecting and analysing computer systems, officers
+can retrieve essential evidence to prove and demonstrate criminal event.
 
+This paper aims to contribute in this field and is focused on USB devices and
+the traces left on operating systems.
 
+USB devices can be used to transfer valuable data in cases of data theft or
+possession of illegal material, and knowledge about when a USB device was
+connected can be really helpful in the investigation.
 
+As stated in the Locard's exchange principle~\cite{locard2008locard}, copying
+data leaves traces. These traces are recoverable as reported for instance by
+several researches available in the literature.~\cite{Tanushree12,Abhijeet14}.
+
+In Section~\ref{sec:lit} is discussed how to access this information in both
+Windows and Linux systems. On windows environment, there are many tools which
+can help us in analysing and retrieving data. However, on Linux there are just
+few useful tools.
+
+Windows is the most used operating systems but Linux usage is
+increasing~\cite{osShare} and actually most of the servers run on a Linux
+distribution~\cite{InternetServer}. In order to contribute in the digital
+forensic field on Linux systems, a tool was developed by us and subsequently
+opensourced. This software will help Linux users in retrieving data about USB
+devices from an image of Linux installation.
+
+The paper is structured as follow. In section~\ref{sec:resprep} is described the
+methodology and the steps performed to analyse the images which were used to
+develop the tool. Then, the achieved goals are described in
+section~\ref{sec:goals} and the short discussion reported in
+section~\ref{sec:concl} ends the paper.
 
 \section{Log files in the main operating system}
 \label{sec:lit}
@@ -115,20 +154,29 @@ image, information about USB devices; currently, the only option is manual
 analysis.
 
 \section{The research preparation}
+\label{sec:resprep}
 \subsection{General plan}
-For this research we will create a few images of different Linux distributions, which ones will be discussed in section \ref{sec:usedLinux} and how we create them is discussed in section \ref{sec:createImage}. We will then analyze the created images' log files by a python program we wrote, which is explained in section \ref{sec:python}
+For this research we will create a few images of different Linux distributions,
+which ones will be discussed in section \ref{sec:usedLinux} and how we create
+them is discussed in section \ref{sec:createImage}. We will then analyze the
+created images' log files by a python program we wrote, which is explained in
+section \ref{sec:python}
 
 \subsection{Used Linux distribution systems}\label{sec:usedLinux}
-We are using the following Linux distributions. 
+We are using the following Linux distributions.
 \begin{itemize}
 \item Fedora 25, kernel 4.8.6
-\item OpenSUSE 
-\item Ubuntu 
-\item Debian 
+\item OpenSUSE
+\item Ubuntu
+\item Debian
 \end{itemize}
-For each Linux we used the last stable version, we start installing the distributions on May 29 2017.
-With these distributions mentioned above, we cover most of the popular Linux distro's \cite{LinuxDistro}, as we can see that some other Linux distro's are part of these. Distributions like Elementary, Linux Mint and  Zorin are all Ubuntu based and thus covered in our research.
-% other website with top10 distro https://brashear.me/blog/2015/08/24/results-of-the-2015-slash-r-slash-linux-distribution-survey/
+For each Linux we used the last stable version, we start installing the
+distributions on May 29 2017. With these distributions mentioned above, we cover
+most of the popular Linux distro's \cite{LinuxDistro}, as we can see that some
+other Linux distro's are part of these. Distributions like Elementary, Linux
+Mint and  Zorin are all Ubuntu based and thus covered in our research. % other
+website with top10 distro
+https://brashear.me/blog/2015/08/24/results-of-the-2015-slash-r-slash-linux-distribution-survey/
 
 \subsection{Creating the images}\label{sec:createImage}
 The following steps were taken to prepare for the research:
@@ -148,13 +196,17 @@ The following steps were taken to prepare for the research:
 
 
 \section{Found results}
+\label{sec:goals}
 
 
 \section{Conclusion}
+\label{sec:concl}
 
 
 
-Analyzing the log fies of a system could besides tracking usb usages, be very useful for other digital forensic applications, like finding unexpected behavior and track the use of the computer.
+Analyzing the log fies of a system could besides tracking usb usages, be very
+useful for other digital forensic applications, like finding unexpected behavior
+and track the use of the computer.
 
 
 \bibliographystyle{abbrv}
