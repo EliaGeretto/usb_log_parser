@@ -36,7 +36,11 @@ class Parser(metaclass=abc.ABCMeta):
         for log_entry in self.__usb_data:
             if re.search(self.__new_usb_pattern, log_entry.message):
                 name = log_entry.message.split(':')[0]
+                idVendor = log_entry.message.split(',')[1].strip()
+                idProduct = log_entry.message.split(',')[2].strip()
                 temp = UsbInfo()
+                temp.product = idProduct
+                temp.manufact = idVendor
                 temp.time_in = log_entry.timestamp
                 if name in dictio:
                     self.results.append(dictio[name])
