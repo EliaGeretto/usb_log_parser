@@ -10,9 +10,21 @@ def parse_arguments():
     return parser.parse_args()
 
 
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-args = parse_arguments()
-extractor = Extractor(args.images)
+def main():
+    logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+    args = parse_arguments()
+    extractor = Extractor(args.images)
 
-for usb_info in extractor.get_usb_info():
-    print(usb_info)
+    print('-' * 116)
+    print('| {:20} | {:20} | {:20} | {:20} | {:20} |'.format(
+            'Manufacturer', 'Product', 'Serial Number',
+            'Insertion time', 'Removal time'))
+    print('-' * 116)
+
+    for usb_info in extractor.get_usb_info():
+        print(usb_info)
+
+    print('-' * 116)
+
+if __name__ == '__main__':
+    main()
