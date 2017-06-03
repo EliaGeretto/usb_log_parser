@@ -54,7 +54,7 @@ several researches available in the literature.~\cite{Tanushree12,Abhijeet14}.
 
 In Section~\ref{sec:lit} is discussed how to access this information in both
 Windows and Linux systems. On windows environment, there are many tools which
-can help us in analysing and retrieving data. However, on Linux there are just
+can help us in analyzing and retrieving data. However, on Linux there are just
 few useful tools.
 
 Windows is the most used operating systems but Linux usage is
@@ -64,13 +64,13 @@ forensic field on Linux systems, a tool was developed by us and subsequently
 opensourced. This software will help Linux users in retrieving data about USB
 devices from an image of Linux installation.
 
-The paper is structured as follow. In section~\ref{sec:resprep} is described the
-methodology and the steps performed to analyze the images which were used to
+The paper is structured as follows. In Section~\ref{sec:contrib} is described
+the methodology and the steps performed to analyze the images which were used to
 develop the tool. Then, the achieved goals are described in
 section~\ref{sec:goals} and the short discussion reported in
 section~\ref{sec:concl} ends the paper.
 
-\section{Log files and USB logging}
+\section{Log files and USB devices}
 \label{sec:lit}
 Log files are one of the most important sources of information when trying to
 reconstruct the events that lead to a certain situation in a computer system.
@@ -154,63 +154,129 @@ is no automated tool that is capable of extracting automatically, from a disk
 image, information about USB devices; currently, the only option is manual
 analysis.
 
-\section{The research preparation}
-\label{sec:resprep}
-\subsection{General plan}
-For this research we will create a few images of different Linux distributions,
-which ones will be discussed in section \ref{sec:usedLinux} and how we create
-them is discussed in section \ref{sec:createImage}. We will then analyze the
-created images' log files by a python program we wrote, which is explained in
-section \ref{sec:python}
+\section{USB device tracking on Linux}
+\label{sec:contrib}
+Given the absence of a forensics tool that is capable of analyzing images taken
+on Linux systems in order to retrieve USB device information, it was decided to
+implement one in Python leveraging several libraries already available.
 
-\subsection{Used Linux distribution systems}\label{sec:usedLinux}
-We are using the following Linux distributions.
+Since the data that needs to be retrieved can be found in two forms, namely
+syslog text files or journald binary log files, it was decided to implement a
+tool capable of distinguishing between the two and parse both file formats.
+
+In Subsection~\ref{sec:prems} all the dependencies and compatibility
+considerations will be listed, explaining the reasons behind the choice of the
+supported distributions. Subsection~\ref{sec:images} will instead be used to
+describe the procedure followed for the creation of the images used in the
+study. Finally, Subsection~\ref{sec:tool} will describe the general structure of
+the tool and the reflections made while constructing it.
+
+\subsection{Dependencies and compatibility}
+\label{sec:prems}
+In the development of our tool, we leveraged two main Python libraries that need
+to be installed on the host machine while performing the analysis:
+\texttt{imagemounter} and \texttt{python-systemd}. Both the libraries were used in
+their Python 3 version.
+
+Regarding \texttt{imagemounter}, this library is simply a wrapper for
+SleuthKit, a set of tools on which Autopsy, mentioned before, is also based.
+This library offers APIs that make mounting an EnCase image from inside a Python
+script quite easy, allowing then the program to explore the directories required
+for the analysis.
+
+The \texttt{python-systemd} library is instead a Python wrapper for the C APIs
+that allow the interaction with the journald log daemon. The use of this library
+was necessary in order to parse the binary format in which the logs are stored
+and extract the relevant information. The positive thing about the use of this
+module is that it grants access to all the information related to the production
+of the log format, for example the kernel subsystem that actually created a
+certain message.
+
+Regarding instead the supported distributions, the choice of supporting Ubuntu
+was quite obvious. This distribution, indeed, apart from having a large market
+share by itself, is also the base for many others, as Linux Mint, all the Ubuntu
+spins and Elementary OS to name a few. Taking all these distributions into
+consideration, a good percentage of the Linux desktop user is covered.
+
+Regarding the choice related to how the system logs are stored, the Ubuntu
+developers made the choice of exploiting systemd's new functionalities, but to
+avoid storing the logs in binary format. Indeed, Ubuntu uses journald to
+collect the logs but then dumps them in a syslog compatible log, as already
+described before. For this reason, the support of Ubuntu required the writing of
+a parser for that particular format.
+
+Given that syslog, or at least syslog compatible logs, Fedora was chosen as the
+second distribution to be supported. This choice was done because it is one of
+the main distributions that, as opposed to Ubuntu, use the journald binary
+format.
+
+A third distribution that was considered for the analysis was OpenSUSE
+considering, again, its market share and the similarity to it's commercial
+counterpart, SUSE Linux Enterprise. Unfortunately, after completing the imaging
+process, we realized that the filesystem used for the root partition in
+OpenSUSE, the new BtrFS, introduced some years ago, is still not supported by
+\texttt{imagemounter}, since it is not commonly used. For this reason, we had to
+exclude it from the analysis.
+
+Regarding the versions of the distributions used, we employed Fedora 25 and
+Ubuntu 17.04, the latest versions available at the moment of writing.
+
+\subsection{Creation of the images}
+\label{sec:images}
+The machine used to collect the images was a HP XXX with UEFI support, on which
+every distribution was installed in sequence. For every image, a similar
+iteration was followed:
 \begin{itemize}
-\item Fedora 25, kernel 4.8.6
-\item OpenSUSE
-\item Ubuntu
-\item Debian
+\item Installation with default settings.
+\item Update to the packets available on the 29th of May 2017.
+\item Installation of all the missing drivers, in particular the WiFi one.
+\item Insertion and extraction of one USB stick 2.0, one USB stick 3.0 and a USB
+	mouse.
+\item Reboot in a live environment.
+\item Create a raw image of the root partition.
+\item Conversion of the image in EnCase format using FTK Imager.
 \end{itemize}
-For each Linux we used the last stable version, we start installing the
-distributions on May 29 2017. With these distributions mentioned above, we cover
-most of the popular Linux distro's \cite{LinuxDistro}, as we can see that some
-other Linux distro's are part of these. Distributions like Elementary, Linux
-Mint and  Zorin are all Ubuntu based and thus covered in our research. % other
-website with top10 distro
-https://brashear.me/blog/2015/08/24/results-of-the-2015-slash-r-slash-linux-distribution-survey/
+It is relevant to point out that the hash of the images was checked across the
+whole process in order to prevent any kind of corruption.
 
-\subsection{Creating the images}\label{sec:createImage}
-The following steps were taken to prepare for the research:
-\begin{itemize}
-\item Clear the computer
-\item Install the Linux Distribution (default installation, version as mentioned in Section \ref{sec:usedLinux})
-\subitem Make sure all drives work correctly (Note: this influence the log file)
-\item Then we repeat 5 times, the following sequence
-\subitem Start up
-\subitem Plug in mouse
-\subitem Plug in USB 2.0
-\subitem Plug in USB 3.0
-\item Create image of the machine
-\end{itemize}
+\subsection{The tool}\label{sec:tool}
+Once the images are obtained, it is possible to feed them to the tool in order
+to receive as output a table containing several information related to all the
+USB devices that were connected to the systems, according to the system logs.
 
-\subsection{The program in Python}\label{sec:python}
+Under the hood, the tool exploits the capabilities of the \texttt{imagemounter}
+library to try to mount every volume contained in the EnCase image provided and
+checks if it is a root Linux filesystem containing the standard log directory.
+If this is the case, the tool determines then which one between syslog and
+journald was used to collect the logs and then starts the parsing process using
+the appropriate submodule.
 
+It is important to note that, if several Linux installations are present on the
+same system, as in a dual boot context, the tool will correctly detect both
+installations and present the results related to both systems. All other
+partitions will simply be ignored.
 
-\section{Found results}
+After the individuation of the log files, according to the type of log, the file
+is feed to a different submodule. The one processing syslog files takes care of
+filtering, one by one, the lines from the full system log and extract only those
+that have been generated by the USB subsystem, while the second leverages the
+\texttt{python-systemd} library in order to parse the binary file and achieve
+the same result through filters on the fields in the binary entries.
+
+Once all the messages generated by the USB subsystem are obtained, ...
+% This final part should be about how the Parser class works and which
+% information is extracted from which message
+
+\section{Results}
 \label{sec:goals}
 
 
 \section{Conclusion}
 \label{sec:concl}
+% Rememeber to point out that the support of FTK Imager, and in general Windows
+% tools, for the Ext4 file system sucks really bad.
 
-
-
-Analyzing the log fies of a system could besides tracking usb usages, be very
-useful for other digital forensic applications, like finding unexpected behavior
-and track the use of the computer.
-
-
-\bibliographystyle{abbrv}
+\bibliographystyle{plain}
 \bibliography{sample}
 
 \end{document}
