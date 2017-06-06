@@ -20,55 +20,47 @@ G. Iadarola & (1879480) \\
 \maketitle
 
 \section{Introduction}
-Nowadays, almost half of all households in Western Europe have a personal
+Nowadays, almost a half of all the households in Western Europe have a personal
 computer and the percentage increases over 90\% by taking into account only
 young people (15 to 30 years old).
 
 The number of computing devices as PCs, laptops and smartphones has increased
 exponentially in the past decade. Daily activities are organized on social
-media, works are performed on laptop and meetings on video-conference. Our
+media, works are performed on laptops and meetings on video-conferences. Our
 entire life is managed through electronic devices and the number of connected
-user is going to grow in the future. The government's (most of them) and the
-public opinion do agree with these changes and support every initiative which
-increase the use of new technologies.
-
-Nevertheless, several problems has to be faced and need to be managed in order
-to keep benefiting from the computing devices revolution.
+users is going to grow in the future. The government's (most of them) and the
+public's opinions do agree with these changes and support every initiative
+which increases the use of new technologies. Nevertheless, several problems have
+to be faced and need to be managed in order to keep benefiting from the
+computing devices revolution.
 
 Everyone can get access and interact with PCs and smartphones and also criminals
 are using them to perpetrate frauds and illegal activities. Indeed, the Digital
-forensic branch is becoming one of the most important sector in the forensics
+Forensics branch is becoming one of the most important sectors in the forensics
 and investigation field. By inspecting and analysing computer systems, officers
 can retrieve essential evidence to prove and demonstrate criminal events.
 
 This paper aims to contribute in this field and is focused on USB devices and
-the traces left on operating systems.
+the traces they leave on operating systems.
 
 USB devices can be used to transfer valuable data in cases of data theft or
-possession of illegal material, and knowledge about when a USB device was
-connected can be really helpful in the investigation.
+possession of illegal material; knowledge about when a USB device was connected
+can be really helpful in the investigation. As stated in the Locard's exchange
+principle~\cite{locard2008locard}, copying data leaves traces. These traces are
+recoverable as reported for instance by several researches available in the
+literature.~\cite{Tanushree12,Abhijeet14}.
 
-As stated in the Locard's exchange principle~\cite{locard2008locard}, copying
-data leaves traces. These traces are recoverable as reported for instance by
-several researches available in the literature.~\cite{Tanushree12,Abhijeet14}.
-
-In Section~\ref{sec:lit} is discussed how to access this information in both
-Windows and Linux systems. On windows environment, there are many tools which
-can help us in analysing and retrieving data. However, on Linux there are just
-few useful tools.
-
-Windows is the most used operating systems but Linux usage is
-increasing~\cite{osShare} and actually most of the servers run on a Linux
-distribution~\cite{InternetServer}. In order to contribute in the digital
-forensic field on Linux systems, an open source tool was developed by us. This
-software will help Linux users in retrieving data about USB devices from an
-image of Linux installation.
-
-The paper is structured as follows. In Section~\ref{sec:contrib} is described
-the methodology and the steps performed to analyse the images which were used to
-develop the tool. Then, the achieved goals are described in
-section~\ref{sec:goals} and the short discussion reported in
-section~\ref{sec:concl} ends the paper.
+In Section~\ref{sec:lit}, this paper discusses how to access this information
+in both Windows and Linux systems. In the Windows environment, there are many
+tools which can help analysing and retrieving data but, on Linux, there are
+just few. Windows is the most used operating system, but Linux usage is
+increasing and actually most of the servers run a Linux
+distribution.~\cite{osShare,InternetServer} In order to contribute to the
+Digital Forensics field on Linux systems, we developed an open source tool that
+will help investigators in retrieving data about USB devices from an image of
+Linux installation. The approach taken and the general structure of the program
+are described in Section~\ref{sec:contrib}. The last section contains instead a
+short summary of our conclusions.
 
 \section{Log files and USB devices}
 \label{sec:lit}
