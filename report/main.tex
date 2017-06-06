@@ -38,8 +38,8 @@ to keep benefiting from the computing devices revolution.
 Everyone can get access and interact with PCs and smartphones and also criminals
 are using them to perpetrate frauds and illegal activities. Indeed, the Digital
 forensic branch is becoming one of the most important sector in the forensics
-and investigation field. By inspecting and analyzing computer systems, officers
-can retrieve essential evidence to prove and demonstrate criminal event.
+and investigation field. By inspecting and analysing computer systems, officers
+can retrieve essential evidence to prove and demonstrate criminal events.
 
 This paper aims to contribute in this field and is focused on USB devices and
 the traces left on operating systems.
@@ -54,18 +54,18 @@ several researches available in the literature.~\cite{Tanushree12,Abhijeet14}.
 
 In Section~\ref{sec:lit} is discussed how to access this information in both
 Windows and Linux systems. On windows environment, there are many tools which
-can help us in analyzing and retrieving data. However, on Linux there are just
+can help us in analysing and retrieving data. However, on Linux there are just
 few useful tools.
 
 Windows is the most used operating systems but Linux usage is
 increasing~\cite{osShare} and actually most of the servers run on a Linux
 distribution~\cite{InternetServer}. In order to contribute in the digital
-forensic field on Linux systems, a tool was developed by us and subsequently
-opensourced. This software will help Linux users in retrieving data about USB
-devices from an image of Linux installation.
+forensic field on Linux systems, an open source tool was developed by us. This
+software will help Linux users in retrieving data about USB devices from an
+image of Linux installation.
 
 The paper is structured as follows. In Section~\ref{sec:contrib} is described
-the methodology and the steps performed to analyze the images which were used to
+the methodology and the steps performed to analyse the images which were used to
 develop the tool. Then, the achieved goals are described in
 section~\ref{sec:goals} and the short discussion reported in
 section~\ref{sec:concl} ends the paper.
@@ -82,10 +82,10 @@ moment.
 Given the information they contain, log files are also one of the most important
 sources of information during a forensics investigation since they allow to
 trace possibly malicious activity through time. As a consequence, it is
-essential to be able to retrieve and analyze them in the fastest way
+essential to be able to retrieve and analyse them in the fastest way
 possible.~\cite{finlayson1987log}
 
-One of the main problems when analyzing log files is that they tend to be huge
+One of the main problems when analysing log files is that they tend to be huge
 in terms of the number of messages collected in them. For this reason, forensics
 investigators usually rely on tools that automatize the process of extraction
 and parsing in order to extract immediately the relevant information.
@@ -93,7 +93,7 @@ and parsing in order to extract immediately the relevant information.
 Given that different operating systems generate log files structured in a
 different way and store them at different locations, the following subsections
 will provide an overview of where the files are located and which tools can
-be used to analyze them in Linux and Windows. Moreover, particular attention
+be used to analyse them in Linux and Windows. Moreover, particular attention
 will be given to the information relative to USB devices, since it is the main
 focus of this study.
 
@@ -113,32 +113,31 @@ of log files from system images in an automatic fashion, so that the
 investigator just needs to observe the relevant data and connect them to the
 evidence already collected.
 
-The two positive consequences of the usage of these tools are that time is saved
-which can be dedicated to other activities and, most importantly, that the
-analysis of the evidence can be considered forensically sound. Indeed, in order
-to avoid damaging or contaminating the evidence collected, the system analyzed
-should always be imaged and the image should be hashed in order to allow for a
-subsequent verification of the investigative process. These tools allow for the
-analysis of these images directly and guarantee the absence of contamination
-during the process.~\cite{murphey2007automated}
+These tools are time saving and, most importantly, the analysis of the evidence
+can be considered forensically sound. Indeed, in order to avoid damaging or
+contaminating the evidence collected, the system analysis should always be
+imaged and the image should be hashed in order to allow for a subsequent
+verification of the investigative process. These tools allow for the analysis of
+these images directly and guarantee the absence of contamination during the
+process.~\cite{murphey2007automated}
 
 The open source tool that is most commonly used for this purpose is called
 \emph{Autopsy}, developed by \emph{SleuthKit}; between other things, it also
-analyzes the system logs and extracts a list of all the USB devices that were
+analyses the system logs and extracts a list of all the USB devices that were
 attached to the machine according to the information in the files. This allows
 an investigator retrieve important information, as the serial number of the
 device or the time of insertion and deletion. This information is important, for
 example, to track USB sticks across different machines.~\cite{deb2015usb}
 
 \subsection{Linux}
-Regarding the Linux operating system, the kernel has an internal log on which
-every module, and thus also the USB drivers, can write on. This log, called
-internal ring buffer, is not directly stored in persistent memory; this task,
-indeed is demanded to other services that also collect logs from other sources,
-as the \emph{X11} display server, and construct a general system log.
+Regarding the Linux operating system, the kernel has an internal log which every
+module can write on, including the USB drivers. This log, called internal ring
+buffer, is not directly stored in persistent memory; indeed, this task is
+demanded to other services that also collect logs from other sources, as the
+\emph{X11} display server, and construct a general system log.
 
 Unfortunately, different distributions use different log-handling daemons and
-even different versions of the same daemon which may store the log files in
+even different versions of the same daemon may store the log files in
 different locations. The most common ones are the \emph{syslog} daemon, which
 stores the log in the \texttt{/var/log/syslog} file in plaintext, and the
 \emph{journald} daemon, part of the systemd project, which stores the files in
@@ -156,7 +155,7 @@ analysis.
 
 \section{USB device tracking on Linux}
 \label{sec:contrib}
-Given the absence of a forensics tool that is capable of analyzing images taken
+Given the absence of a forensics tool that is capable of analysing images taken
 on Linux systems in order to retrieve USB device information, it was decided to
 implement one in Python leveraging several libraries already available.
 
@@ -175,8 +174,8 @@ the tool and the reflections made while constructing it.
 \label{sec:prems}
 In the development of our tool, we leveraged two main Python libraries that need
 to be installed on the host machine while performing the analysis:
-\texttt{imagemounter} and \texttt{python-systemd}. Both the libraries were used in
-their Python 3 version.
+\texttt{imagemounter} and \texttt{python-systemd}. Both the libraries were used
+in their Python 3 version.
 
 Regarding \texttt{imagemounter}, this library is simply a wrapper for
 SleuthKit, a set of tools on which Autopsy, mentioned before, is also based.
