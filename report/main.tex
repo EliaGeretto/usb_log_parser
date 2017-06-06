@@ -165,7 +165,7 @@ the tool and the reflections made while constructing it.
 \subsection{Dependencies and compatibility}
 \label{sec:prems}
 In the development of our tool, we leveraged two main Python libraries that need
-to be installed on the host machine while performing the analysis:
+to be installed on the machine performing the analysis:
 \texttt{imagemounter} and \texttt{python-systemd}. Both the libraries were used
 in their Python 3 version.
 
@@ -187,7 +187,7 @@ Regarding instead the supported distributions, the choice of supporting Ubuntu
 was quite obvious. This distribution, indeed, apart from having a large market
 share by itself, is also the base for many others, as Linux Mint, all the Ubuntu
 spins and Elementary OS to name a few. Taking all these distributions into
-consideration, a good percentage of the Linux desktop user is covered.
+consideration, a good percentage of the Linux desktop users is covered.
 
 Regarding the choice related to how the system logs are stored, the Ubuntu
 developers made the choice of exploiting systemd's new functionalities, but to
@@ -196,13 +196,13 @@ collect the logs but then dumps them in a syslog compatible log, as already
 described before. For this reason, the support of Ubuntu required the writing of
 a parser for that particular format.
 
-Given that syslog, or at least syslog compatible logs, Fedora was chosen as the
-second distribution to be supported. This choice was done because it is one of
-the main distributions that, as opposed to Ubuntu, use the journald binary
-format.
+Given that syslog, or at least syslog compatible logs were covered, Fedora was
+chosen as the second distribution to be supported. This choice was done because
+it is one of the main distributions that, as opposed to Ubuntu, use the
+journald binary format.
 
-A third distribution that was considered for the analysis was OpenSUSE
-considering, again, its market share and the similarity to it's commercial
+A third distribution that was evaluated for the analysis was OpenSUSE
+considering, again, its market share and the similarity to its commercial
 counterpart, SUSE Linux Enterprise. Unfortunately, after completing the imaging
 process, we realized that the filesystem used for the root partition in
 OpenSUSE, the new BtrFS, introduced some years ago, is still not supported by
@@ -224,7 +224,7 @@ iteration was followed:
 \item Insertion and extraction of one USB stick 2.0, one USB stick 3.0 and a USB
 	mouse.
 \item Reboot in a live environment.
-\item Create a raw image of the root partition.
+\item Creation of a raw image of the root partition.
 \item Conversion of the image in EnCase format using FTK Imager.
 \end{itemize}
 It is relevant to point out that the hash of the images was checked across the
