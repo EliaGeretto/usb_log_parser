@@ -173,16 +173,15 @@ the tool and the reflections made while constructing it.
 
 \subsection{Dependencies and compatibility}
 \label{sec:prems}
-In the development of our tool, we leveraged two main Python libraries that need
+In the development of our tool, we used two main libraries that need
 to be installed on the machine performing the analysis:
 \texttt{imagemounter} and \texttt{python-systemd}. Both the libraries were used
 in their Python 3 version.
 
-Regarding \texttt{imagemounter}, this library is simply a wrapper for
-SleuthKit, a set of tools on which Autopsy, mentioned before, is also based.
-This library offers APIs that make mounting an EnCase image from inside a Python
-script quite easy, allowing then the program to explore the directories required
-for the analysis.
+Regarding \texttt{imagemounter}, it is simply a wrapper for SleuthKit, a set of
+tools on which Autopsy, mentioned before, is also based.  This library offers
+APIs that make mounting an EnCase image from inside a Python script quite easy,
+allowing then the program to explore the directories required for the analysis.
 
 The \texttt{python-systemd} library is instead a Python wrapper for the C APIs
 that allow the interaction with the journald log daemon. The use of this library
