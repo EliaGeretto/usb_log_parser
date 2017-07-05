@@ -20,28 +20,20 @@ G. Iadarola & (1879480) \\
 \maketitle
 
 \abstract{The use of computers has increased exponentially in the last decade,
-	so has cybercrime and the need for digital forensics. The use of Linux
-	computers is growing, but there are almost no digital forensics tools
-	that can scan a Linux image. In this paper we will give an overview on
-	Linux logging deamons and we will introduce a tool, USB Log Parser,
-	which is able to retrive information about USB devices from them. The
-	tool covers most of the commonly used Linux distributions, like Ubuntu
-	and Fedora, handling differences in logging systems.}
+so has cybercrime and the need for digital forensics. The use of Linux computers
+is growing, but there are almost no digital forensics tools that can scan a
+Linux image and support for Ext4 file system is poor on Windows. In this paper
+we will give an overview on Linux logging deamons and we will introduce a tool,
+USB Log Parser, which is able to retrieve information about USB devices from
+them and can help in covering the gap on Linux forensics tools compatibility.
+The tool covers most of the commonly used Linux distributions, like Ubuntu and
+Fedora, handling differences in logging systems.}
 
 \section{Introduction}
-Nowadays, almost a half of all the households in Western Europe have a personal
-computer and the percentage increases over 90\% by taking into account only
-young people (15 to 30 years old).
-
-The number of computing devices as PCs, laptops and smartphones has increased
-exponentially in the past decade. Daily activities are organized on social
-media, works are performed on laptops and meetings on video-conferences. Our
-entire life is managed through electronic devices and the number of connected
-users is going to grow in the future. The government's (most of them) and the
-public's opinions do agree with these changes and support every initiative
-which increases the use of new technologies. Nevertheless, several problems have
-to be faced and need to be managed in order to keep benefiting from the
-computing devices revolution.
+Nowadays, our entire life is managed through electronic devices and the number of
+connected users is going to grow in the future. Nevertheless, several
+problems have to be faced and need to be managed in order to keep benefiting
+from the computing devices revolution.
 
 Everyone can get access and interact with PCs and smartphones and also criminals
 are using them to perpetrate frauds and illegal activities. Indeed, the Digital
@@ -49,27 +41,45 @@ Forensics branch is becoming one of the most important sectors in the forensics
 and investigation field. By inspecting and analysing computer systems, officers
 can retrieve essential evidence to prove and demonstrate criminal events.
 
-This paper aims to contribute in this field and is focused on USB devices and
-the traces they leave on operating systems.
+The percentage of Windows user on desktop and laptop machine is around
+90\%~\cite{usagePC}, and the digital forensic tools available on the market
+follow this line because most of them run on Windows environment. For instance,
+the well-known and used $FTK~Imager$ does not support Ext4, which is a standard
+format for Linux systems. By looking at the statistics, the Linux user holds
+around the 2\% percent of the market share, but more than 66\% of internet
+servers run a Linux distribution and taking into account only the Web developers
+the 22\% of the programmers work on Linux~\cite{usagePC}.
+
+Moreover, because the entire Linux world is open source and mantained by free
+work of people, it is not easily accessible by performing just accademic
+researchs. Linux developers prefer writing guides or articles on blogs rather
+than scientific papers. So, there is also a lack of knowledge of functionalities
+about Linux system from a scientific and accademic point of view.
+
+This paper aims to contribute in filling this gap by presenting an overview on
+Linux logging deamons and by introducing a tool, USB Log Parser, which is able
+to retrieve information about USB devices. The tool was developed by the authors
+as a forensic soundness tool which can help digital forensic investigators in
+extracting useful information from USB devices and the traces they leave on
+operating systems in a short time.
 
 USB devices can be used to transfer valuable data in cases of data theft or
 possession of illegal material; knowledge about when a USB device was connected
-can be really helpful in the investigation. As stated in the Locard's exchange
-principle~\cite{locard2008locard}, copying data leaves traces. These traces are
+can be really helpful in the investigation. As implied by the Locard's exchange
+principle~\cite{locard2008locard}, every contact leaves a trace. These traces are
 recoverable as reported for instance by several researches available in the
 literature.~\cite{Tanushree12,Abhijeet14}
 
-In Section~\ref{sec:lit}, this paper discusses how to access this information
-in both Windows and Linux systems. In the Windows environment, there are many
-tools which can help analysing and retrieving data but, on Linux, there are
-just few. Windows is the most used operating system, but Linux usage is
-increasing and actually most of the servers run a Linux
-distribution.~\cite{InternetServer} In order to contribute to the
-Digital Forensics field on Linux systems, we developed an open source tool that
-will help investigators in retrieving data about USB devices from an image of
-Linux installation. The approach taken and the general structure of the program
-are described in Section~\ref{sec:contrib}. The last section contains instead a
-short summary of our conclusions.
+In Section~\ref{sec:lit}, this paper discusses how to access this information in
+both Windows and Linux systems. In the Windows environment, there are many tools
+which can help analysing and retrieving data but, on Linux, there are just a
+few. In order to contribute to the Digital Forensics field on Linux systems, we
+developed an open source tool that will help investigators in retrieving data
+about USB devices from an image of Linux installation. The approach taken and
+the general structure of the program are described in Section~\ref{sec:contrib}.
+The tool was tested on an image of Linux installation and the result are
+presented in Section~\ref{sec:result}. The last section contains instead a short
+summary of our conclusions.
 
 \section{Log files and USB devices}
 \label{sec:lit}
@@ -274,6 +284,11 @@ pattern matches one, the line is parsed and the information retrieved. The new
 data is then saved inside an object which stores all the information found for
 the same USB device. Finally, all the information is printed grouped by USB
 device.
+
+\section{Result}
+\label{sec:result}
+
+USAGE AND SCREENSHOTS
 
 \section{Conclusion}
 \label{sec:concl}
