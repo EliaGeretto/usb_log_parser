@@ -30,6 +30,7 @@ The tool covers most of the commonly used Linux distributions, like Ubuntu and
 Fedora, handling differences in logging systems.}
 
 \section{Introduction}
+\label{sec:intro}
 Nowadays, our entire life is managed through electronic devices and the number of
 connected users is going to grow in the future. Nevertheless, several
 problems have to be faced and need to be managed in order to keep benefiting
@@ -246,11 +247,13 @@ exclude it from the analysis.
 As far as the compatibility of the tool is concerned, it is restricted to the
 same compatibility of the libraries \texttt{python-systemd} and
 \texttt{imagemounter}. As a good point, since the tool is based on these two
-libraries, it will increase the compatibility when these libraries will increase
+libraries, it will improve the compatibility when these libraries will extend
 the support for different systems.
 
 Regarding the versions of the distributions used, we employed Fedora 25 and
 Ubuntu 17.04, the latest versions available at the moment of writing.
+
+The tool is available online on Github~\cite{ourtool}.
 
 \subsection{Creation of the images}
 \label{sec:images}
@@ -346,7 +349,7 @@ information related to the USB Device that we were looking for. The tool was
 able to find also the Serial Number and the Insertion and Removal time of these
 devices, which are really useful information during an investigation. The other
 lines are related to the hardware and devices of the laptop which were detected
-by journald and stored in the log file. The mouse device is listed too in lines
+by journald and stored in the system log. The mouse device is listed too in lines
 11 and 15.
 
 The steps performed in this Section are replicable by everyone because all the
@@ -355,33 +358,36 @@ GITHUB REPO AND LINK TO UBUNTU IMAGE).
 
 \section{Conclusion}
 \label{sec:concl}
-It is a matter of fact that Windows does not have native support for Linux
-file systems. Once more, compatibility problems were faced also during the
-development of the tool. Since the most used forensic tools run on Windows,
-analysing Linux systems is harder than Windows ones.
+It is a matter of fact that Windows does not have native support for Linux file
+systems. Since the most used forensic tools run on Windows, analysing Linux
+systems is harder than Windows ones.
 
-Nevertheless, for the sake of completeness, the investigators cannot assume
-that the criminals will use Windows only. Because of that, it is really
-important to develop software to handle all the possible distributions and file
-systems in order to produce precise and complete investigations. On this
-assumptions, our tool can contribute in analysing USB devices traces on Linux
-systems.
+Nevertheless, for the sake of completeness, the investigators cannot assume that
+the criminals will use Windows only. As already discussed in
+Section~\ref{sec:intro}, just taking into account software developers so skilful
+people in the computer science field and able to perform harder and possibly
+dangerous operation, the Linux systems hold a relevant part of the market
+share. Because of that, it is really important to develop software to handle all
+the possible distributions and file systems in order to produce precise and
+complete investigations. On this assumptions, our tool can contribute in
+analysing USB devices traces on Linux systems.
 
-The developed tool is able to retrieve logs quickly. By extracting and parsing
-only a restricted set of files, it reports the USB traces immediately.
-Obviously, it cannot produce a complete analysis of the images but will not
-waste time in deep analysis when it is not required. Indeed, when USB devices
-are involved during an investigation, just demonstrating the connection to a
-victim machine can be enough to prove the criminal act. As far as the authors
-know, there are no tools which are able to analyse EnCase format of Linux
-operating system images and retrieve automatically information related to USB
-devices, the only doable technique is to check manually in the log files of the
-images, which is a really time consuming operation because is necessary to mount
-all the image just to check a couple of lines of the log files.
+The developed tool is able to retrieve logs quickly, as demonstrated in
+Section~\ref{sec:result}. By extracting and parsing only a restricted set of
+files, it reports the USB traces immediately. Obviously, it cannot produce a
+complete analysis of the images but will not waste time in deep analysis when it
+is not required. Indeed, when USB devices are involved during an investigation,
+just demonstrating the connection to a victim machine can be enough to prove the
+criminal act. As far as the authors know, there are no tools which are able to
+analyse EnCase format of Linux operating system images and retrieve
+automatically information related to USB devices, the only doable technique is
+to check manually in the log files, which is a really time consuming operation
+because is necessary to mount all the image just to check a couple of lines of
+the log files.
 
 Moreover, the analysis produced by the tool is forensically sound, because it
 does not compromise the integrity of the images since it works on system
-images and the tool is based on well-know and used libraries.
+images and the tool is based on well-known and used libraries.
 
 In conclusion, this paper reported a short overview on log files across
 different operating systems in order to summarize and compare the different
