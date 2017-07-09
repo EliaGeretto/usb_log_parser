@@ -145,12 +145,13 @@ these images directly and guarantee the absence of contamination during the
 process.~\cite{murphey2007automated}
 
 The open source tool that is most commonly used for this purpose is called
-\emph{Autopsy}, developed by \emph{SleuthKit}; between other things, it also
-analyses the system logs and extracts a list of all the USB devices that were
-attached to the machine according to the information in the files. This allows
-an investigator to retrieve important information, as the serial number of the
-device or the time of insertion and deletion. This information is important, for
-example, to track USB sticks across different machines.~\cite{deb2015usb}
+\emph{Autopsy}, developed by \emph{SleuthKit}~\cite{sleuthkit}; between other
+things, it also analyses the system logs and extracts a list of all the USB
+devices that were attached to the machine according to the information in the
+files. This allows an investigator to retrieve important information, as the
+serial number of the device or the time of insertion and deletion. This
+information is important, for example, to track USB sticks across different
+machines.~\cite{deb2015usb}
 
 \subsection{Linux}
 Regarding the Linux operating system, the kernel has an internal log on which
@@ -191,7 +192,8 @@ considerations will be listed, explaining the reasons behind the choice of the
 supported distributions. Subsection~\ref{sec:images} will instead be used to
 describe the procedure followed for the creation of the images used in the
 study. Finally, Subsection~\ref{sec:tool} will describe the general structure of
-the tool and the reflections made while constructing it.
+the tool and the reflections made while constructing it. Given that the tool is
+opern source, the code is available online.~\cite{ourtool}
 
 \subsection{Dependencies and compatibility}
 \label{sec:prems}
